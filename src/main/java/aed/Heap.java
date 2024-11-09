@@ -1,13 +1,13 @@
 package aed;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class Heap<T> {
 
     ArrayList<Nodo> lista;
-    Comparator<T> comparador;
+    Comparadores comparador;
+    int index;
 
-    public class Nodo {
+    private class Nodo {
         T objeto;
         ArrayList<Integer> indices;// seria una lista donde la posicion 0 es la posicion en este heap y la otra posicion es en el otro heap
 
@@ -16,21 +16,17 @@ public class Heap<T> {
             this.indices = null;
         }
 
-        public Nodo (T objeto, ArrayList<Integer> indices) {
-            this.objeto = objeto;
-            this.indices = indices;
-        }
     }
 
     //Constructor de Heap
-    public Heap(Comparator<T> comparador) {
+    public Heap(Comparadores comparador) {
         this.comparador = comparador;
         this.lista = new ArrayList<Nodo>();
         crearHeap();
     }
 
     // Constructor de Heap con lista
-    public Heap(Comparator<T> comparador, ArrayList<Nodo> array) {
+    public Heap(Comparadores comparador, ArrayList<Nodo> array) {
         this.comparador = comparador;
         this.lista = new ArrayList<Nodo>(array); // Copia de la lista
         crearHeap();
@@ -46,8 +42,9 @@ public class Heap<T> {
     
     //agregar se le aplica a Heap<T>
     public void agregar(T objeto){
-        Nodo nodoObjeto = new Nodo(objeto, null);
-       this.lista.add(nodoObjeto);
+        Nodo nodoObjeto = new Nodo(objeto);
+        this.lista.add(nodoObjeto);
+        nodoObjeto.indices.add(this.lista.size() - 1);
         heapifyUp(lista.size() - 1);
     }
 
@@ -56,6 +53,15 @@ public class Heap<T> {
         lista.remove(lista.size() - 1);
         heapifyDown(indice);
     } 
+
+    public int size(){
+        return lista.size();
+    }
+
+    public ArrayList<Integer> obtenerIndices(Integer indice){
+        Nodo nodo = lista.get(indice);
+        return nodo.indices;
+    }
     
     // private void heapify(ArrayList <Nodo> heap){ //complejidad = O(n)
 
@@ -103,8 +109,8 @@ public class Heap<T> {
         return comparador.compare(lista.get(indice).objeto, lista.get(padre).objeto) > 0;
     }
 */
-    public Nodo sacarPrimero() {
-        Nodo res = lista.get(0);
+    public T sacarPrimero() {
+        T res = lista.get(0).objeto;
         this.eliminar(0);
         return res;
     }
@@ -137,11 +143,7 @@ public class Heap<T> {
                 swap(indice, indiceDelPadre);
                 indice = indiceDelPadre;
 
-            } else {
-
-                break;
-
-            }
+            } else {break;}
         }
     }
 

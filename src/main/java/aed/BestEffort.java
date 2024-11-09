@@ -2,6 +2,9 @@ package aed;
 
 import java.util.ArrayList;
 
+import aed.Comparadores.MasAntiguo;
+import aed.Comparadores.MasRedituable;
+
 public class BestEffort {
     
     int cantDespachos;
@@ -14,7 +17,14 @@ public class BestEffort {
     public BestEffort(int cantCiudades, Traslado[] traslados){
         // O(|C| + |T|)
 
-        //IMPLEMENTAR DOUBLE HEAP 
+
+        Comparadores.MasAntiguo comparadorMasAntiguo = new Comparadores.MasAntiguo();
+        Comparadores.MasRedituable comparadorMasRedituable = new Comparadores.MasRedituable();
+
+        Comparadores[] comparadores = new Comparadores[2];
+        comparadores[0] = comparadorMasAntiguo;
+        comparadores[1] = comparadorMasRedituable;
+        HeapManager<Heap<Traslado>> HeapManager = new HeapManager(comparadores)
 
         //Heap<Traslado> heapAntiguedad = new Heap(new Comparadores.MasAntiguo());
         //Heap<Traslado> heapGanancia = new Heap(new Comparadores.MasRedituable());
@@ -59,7 +69,7 @@ public class BestEffort {
          for (int index = 0; index < n; index++) {
             //MasRedituables[index] = HeapManager.obtenerMasAntiguo
          }
-         
+
         // Itero las N cantidad de despachos (SI N>Traslados.nodosDelHeap -> despacho todos)
             // Busco las N cantidad de traslados en HeapGanancias (Hay que eliminar, sabemos que es el minimo, log n) (log t) 
             // Modifico las 2 ciudades para mantener la estadistica (2 * log = log, cumple avl) (debe ser log c) 
