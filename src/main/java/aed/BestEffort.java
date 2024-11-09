@@ -2,8 +2,8 @@ package aed;
 
 import java.util.ArrayList;
 
-import aed.Comparadores.MasAntiguo;
-import aed.Comparadores.MasRedituable;
+/* import aed.Comparadores.MasAntiguo;
+import aed.Comparadores.MasRedituable; */
 
 public class BestEffort {
     
@@ -11,82 +11,109 @@ public class BestEffort {
     int gananciaDespachos;
     ArrayList<Integer> idCiudadesMayorGanancia;
     ArrayList<Integer> idCiudadesMayorPerdida;
-    HeapManager<Heap<Traslado>> HeapManager;
+    HeapManager<Traslado> HeapManager;
     Heap<Ciudad> HeapSuperAvit;
+    Ciudad[] listaCiudades;
 
     public BestEffort(int cantCiudades, Traslado[] traslados){
         // O(|C| + |T|)
 
-
-        Comparadores.MasAntiguo comparadorMasAntiguo = new Comparadores.MasAntiguo();
+        //TODO REVISAR COMPARADORES; CLASS; IMPLEMENTACION.
+/*         Comparadores.MasAntiguo comparadorMasAntiguo = new Comparadores.MasAntiguo();
         Comparadores.MasRedituable comparadorMasRedituable = new Comparadores.MasRedituable();
-
+ */
         Comparadores[] comparadores = new Comparadores[2];
-        comparadores[0] = comparadorMasAntiguo;
-        comparadores[1] = comparadorMasRedituable;
-        HeapManager<Heap<Traslado>> HeapManager = new HeapManager(comparadores)
+/*      comparadores[0] = comparadorMasAntiguo;
+        comparadores[1] = comparadorMasRedituable; */
+        HeapManager = new HeapManager<Traslado>(comparadores);
 
-        //Heap<Traslado> heapAntiguedad = new Heap(new Comparadores.MasAntiguo());
-        //Heap<Traslado> heapGanancia = new Heap(new Comparadores.MasRedituable());
-        //Heap<Ciudad> heapCiudades = new Heap(new Comparadores.MasSuperHabit());
-        Ciudad[] listaCiudades = new Ciudad[cantCiudades];
+        listaCiudades = new Ciudad[cantCiudades];
 
-        // Itero cant de ciudades (Ints)
+        // Itero cant de ciudades O(|C|)
         for (int index = 0; index < cantCiudades ; index++) {
             listaCiudades[index] = new Ciudad(index);
         }
 
-        // Itero traslados (id, origen, destino, gananciaNeta, timestamp)
+        // Itero traslados O(2|T|) -> O(|T|)
         for (Traslado traslado : traslados) {
-            //Agregar a HeapManager
+            HeapManager.agregar(traslado);
         }
 
-            // Clase de Heap dinamica para instaciar los heaps
     }
 
     public void registrarTraslados(Traslado[] traslados){
         // O(|traslados| log(|T|))
+
+        // Agrega |traslados| elementos, y la funcion agregar funciona en log(|T|) 
         for (Traslado traslado : traslados) {
-            
+            HeapManager.agregar(traslado);
         }
-            // Agrego traslado al HeapAntiguedad
-            // Agrego traslado al HeapGanancia
-
-            //o
-
-            // Agrego a multiheap (ambos heaps)
-
-            // handler -> sincronizar los heaps
-            // Clase -> [T1] [T1] -> {pos_h1 pos_h2} -> Swaps actualizan posiciones
-
-            // 2 log(|T|) = O(log(|T|))
-
     }
 
     public int[] despacharMasRedituables(int n){
         //  O(n (log(|T |) + log(|C|)))
-        int[] MasRedituables = new int[10];
-         for (int index = 0; index < n; index++) {
-            //MasRedituables[index] = HeapManager.obtenerMasAntiguo
-         }
-
-        // Itero las N cantidad de despachos (SI N>Traslados.nodosDelHeap -> despacho todos)
-            // Busco las N cantidad de traslados en HeapGanancias (Hay que eliminar, sabemos que es el minimo, log n) (log t) 
-            // Modifico las 2 ciudades para mantener la estadistica (2 * log = log, cumple avl) (debe ser log c) 
         
-        // usamos handler para eliminar del otro heap
+        if(n > HeapManager.size()){
+            n = HeapManager.size();
+        }
+        int[] MasRedituables = new int[n];
+
+        // Despachamos los n Traslados mas Redituables O(n log(|T|))
+        // Modificamos las variables en O(1)
+        for (int index = 0; index < n; index++) {
+            Traslado traslado = HeapManager.sacar(1);
+            Ciudad origen = listaCiudades[traslado.origen];
+            Ciudad destino = listaCiudades[traslado.destino];
+            
+            MasRedituables[index] = traslado.id;
+            origen.ganancia += traslado.gananciaNeta;
+            destino.perdida += traslado.gananciaNeta;
+            gananciaDespachos += traslado.gananciaNeta;
+            cantDespachos += 1;
+
+            compararStatsCiudades(idCiudadesMayorGanancia, origen);
+            compararStatsCiudades(idCiudadesMayorPerdida, destino); 
+        }
         return MasRedituables;
     }
-
+    
+    
     public int[] despacharMasAntiguos(int n){
         //  O(n (log(|T |) + log(|C|)))
-
-        // Itero las N cantidad de despachos (SI N>Traslados.length -> despacho todos)
-            // Busco las N cantidad de traslados en HeapAntiguedad (Hay que eliminar, sabemos que es el mas, log n) (log t) 
-            // Modifico las 2 ciudades para mantener la estadistica (2 * log = log, cumple avl) (debe ser log c) 
-
-        // usamos handler para eliminar del otro heap
-        return null;
+        
+        if(n > HeapManager.size()){
+            n = HeapManager.size();
+        }
+        int[] MasAntiguos = new int[n];
+        
+        // Despachamos los n Traslados mas Antiguos O(n log(|T|))
+        // Modificamos las variables en O(1)
+        for (int index = 0; index < n; index++) {
+            Traslado traslado = HeapManager.sacar(0);
+            Ciudad origen = listaCiudades[traslado.origen];
+            Ciudad destino = listaCiudades[traslado.destino];
+            
+            MasAntiguos[index] = traslado.id;
+            origen.ganancia += traslado.gananciaNeta;
+            destino.perdida += traslado.gananciaNeta;
+            gananciaDespachos += traslado.gananciaNeta;
+            cantDespachos += 1;
+            
+            compararStatsCiudades(idCiudadesMayorGanancia, origen);
+            compararStatsCiudades(idCiudadesMayorPerdida, destino); 
+        }
+        return MasAntiguos;
+    }
+    
+    //Todas operaciones en O(1)
+    private void compararStatsCiudades(ArrayList<Integer> listaId, Ciudad ciudad) {
+        Ciudad mayor = listaCiudades[listaId.get(0)];
+        if(ciudad.ganancia == mayor.ganancia){
+            listaId.add(ciudad.id);
+        } else if (ciudad.ganancia > mayor.ganancia) {
+            listaId.clear();
+            listaId.add(ciudad.id);
+        }   
     }
 
     public int ciudadConMayorSuperavit(){

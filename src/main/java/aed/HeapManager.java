@@ -36,6 +36,10 @@ public class HeapManager<T> {
         }
     }
 
+    public int size(){
+        return heapList.get(0).size();
+    }
+
     // agrego dinamicamente el elemento en todos los heapList
     public void agregar(T valor) {
         for (Heap<T> heap : heapList) {
