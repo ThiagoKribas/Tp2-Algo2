@@ -1,22 +1,32 @@
-public package aed;
+package aed;
+
+import java.util.Comparator;
 
 class Comparadores {
 
-    public menorId(int value, T obj1, T obj2){
+    static int menorId(int value, Traslado obj1, Traslado obj2){
 
         // Checkeamos si es la menor id
         if (value == 0){
-            value = int.compare(obj2.id, obj1.id);
+            value = Integer.compare(obj2.id, obj1.id);
         }
         return value;
     }
 
+    static int menorId(int value, Ciudad obj1, Ciudad obj2){
+
+        // Checkeamos si es la menor id
+        if (value == 0){
+            value = Integer.compare(obj2.id, obj1.id);
+        }
+        return value;
+    }
     // Comparacion dinamica de atributo Traslado.timestamp
 
     static class MasAntiguo implements Comparator<Traslado>{
 
-        public int compare(T t1, T t2){
-            int value = int.compare(t2.timestamp, t1.timestamp);
+        public int compare(Traslado t1, Traslado t2){
+            int value = Integer.compare(t2.timestamp, t1.timestamp);
             value = menorId(value, t2, t1);
             return value;
         }
@@ -26,9 +36,9 @@ class Comparadores {
 
     static class MasRedituable implements Comparator<Traslado>{
 
-        public int compare(T t1, T t2){
-            int value = int.compare(t1.gananciaNeta, t2.gananciaNeta);
-            value = menorId(t1, t2);
+        public int compare(Traslado t1, Traslado t2){
+            int value = Integer.compare(t1.gananciaNeta, t2.gananciaNeta);
+            value = menorId(value, t1, t2);
             return value;
         }
     }
@@ -37,9 +47,9 @@ class Comparadores {
 
     static class MasSuperHabit implements Comparator<Ciudad>{
         
-        public int compare(T c1, T c2){
-            int value = int.compare(c1.superavit, c2.superavit);
-            value = menorId(c1, c2);
+        public int compare(Ciudad c1, Ciudad c2){
+            int value = Integer.compare(c1.superavit, c2.superavit);
+            value = menorId(value, c1, c2);
             return value;
         }    
     }

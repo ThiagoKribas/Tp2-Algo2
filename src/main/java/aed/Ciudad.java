@@ -1,17 +1,17 @@
 package aed;
 
 public class Ciudad {
-    
+
     int id;
     int ganancia;
     int perdida;
     int superavit;
 
-    public Ciudad(id){
+    public Ciudad(int id){
         this.id = id;
     }
 
-    public modificar(ganancia, perdida){
+    public void modificar(int ganancia, int perdida){
         this.ganancia += ganancia;
         this.perdida += perdida;
         this.superavit = ganancia - perdida; 

@@ -1,19 +1,24 @@
 package aed;
 
 import java.util.ArrayList;
-import Array;
 
 public class BestEffort {
     
     int cantDespachos;
     int gananciaDespachos;
-    
+    ArrayList<Integer> idCiudadesMayorGanancia;
+    ArrayList<Integer> idCiudadesMayorPerdida;
+    HeapManager<Heap<Traslado>> HeapManager;
+    Heap<Ciudad> HeapSuperAvit;
 
     public BestEffort(int cantCiudades, Traslado[] traslados){
         // O(|C| + |T|)
-        Heap heapAntiguedad = new Heap(new Comparadores.MasAntiguo());
-        Heap heapGanancia = new Heap(new Comparadores.MasRedituable());
-        Heap heapCiudades = new Heap(new Comparadores.MasSuperHabit());
+
+        //IMPLEMENTAR DOUBLE HEAP 
+
+        //Heap<Traslado> heapAntiguedad = new Heap(new Comparadores.MasAntiguo());
+        //Heap<Traslado> heapGanancia = new Heap(new Comparadores.MasRedituable());
+        //Heap<Ciudad> heapCiudades = new Heap(new Comparadores.MasSuperHabit());
         Ciudad[] listaCiudades = new Ciudad[cantCiudades];
 
         // Itero cant de ciudades (Ints)
@@ -22,9 +27,8 @@ public class BestEffort {
         }
 
         // Itero traslados (id, origen, destino, gananciaNeta, timestamp)
-        for (Traslados traslado : traslados) {
-            this.heapAntiguedad.agregar(traslado);
-            this.heapGanancia.agregar(traslado)
+        for (Traslado traslado : traslados) {
+            //Agregar a HeapManager
         }
 
             // Clase de Heap dinamica para instaciar los heaps
@@ -32,7 +36,7 @@ public class BestEffort {
 
     public void registrarTraslados(Traslado[] traslados){
         // O(|traslados| log(|T|))
-        for (Traslado[] traslado : traslados) {
+        for (Traslado traslado : traslados) {
             
         }
             // Agrego traslado al HeapAntiguedad
@@ -51,13 +55,17 @@ public class BestEffort {
 
     public int[] despacharMasRedituables(int n){
         //  O(n (log(|T |) + log(|C|)))
-
+        int[] MasRedituables = new int[10];
+         for (int index = 0; index < n; index++) {
+            //MasRedituables[index] = HeapManager.obtenerMasAntiguo
+         }
+         
         // Itero las N cantidad de despachos (SI N>Traslados.nodosDelHeap -> despacho todos)
             // Busco las N cantidad de traslados en HeapGanancias (Hay que eliminar, sabemos que es el minimo, log n) (log t) 
             // Modifico las 2 ciudades para mantener la estadistica (2 * log = log, cumple avl) (debe ser log c) 
         
         // usamos handler para eliminar del otro heap
-        return null;
+        return MasRedituables;
     }
 
     public int[] despacharMasAntiguos(int n){
@@ -73,42 +81,22 @@ public class BestEffort {
 
     public int ciudadConMayorSuperavit(){
         // O(1)
-
-        // despachamos -> Agregamos ciudades inexistentes y actualizamos existentes
-
-        // HEAP Superavit O(1)
-
-        return 0;
+        return HeapSuperAvit.obtenerPrimero().id;
     }
 
     public ArrayList<Integer> ciudadesConMayorGanancia(){
-        // O(1)
-
-        // despachamos -> Agregamos ciudades inexistentes y actualizamos existentes
-
-        // HEAP Superavit - obs masGanancia = []
-
-        return null;
+        //O(1)
+        return idCiudadesMayorGanancia;
     }
 
     public ArrayList<Integer> ciudadesConMayorPerdida(){
-        // O(1)
-
-        // despachamos -> Agregamos ciudades inexistentes y actualizamos existentes
-
-        // HEAP Superavit - obs masPerdida = []
-
-        return null;
+        //O(1)
+        return idCiudadesMayorPerdida;
     }
 
     public int gananciaPromedioPorTraslado(){
-        // O(1)
-
-        // despachamos -> Despachados ganancia sumada / cantidad de despachados 
-
-        // HEAP Superavit - obs Ganancia Total / 2 = Int 
-
-        return 0;
+        //O(1)
+        return (gananciaDespachos / cantDespachos);
     }
     
 }
