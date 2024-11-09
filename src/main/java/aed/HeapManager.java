@@ -7,6 +7,18 @@ import java.util.List;
 public class HeapManager<T> {
     private List<Heap<T>> heaps;
 
+    public HeapManager(List<Comparator<T>> comparadores){
+        heaps = new ArrayList<>();
+
+        for (Comparator<T> comparador : comparadores) {
+
+            Heap<T> heap = new Heap<T>(comparador);
+            
+            heaps.add(heap);
+
+        }
+    }
+
     // agrego comparadores y datos en ambos heaps
     public HeapManager(List<Comparator<T>> comparadores, List<T> datosIniciales) {
         heaps = new ArrayList<>();

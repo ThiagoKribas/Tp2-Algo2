@@ -9,7 +9,12 @@ public class Heap<T> {
 
     public class Nodo {
         T objeto;
-        ArrayList<Integer> indices = null;// seria una lista donde la posicion 0 es la posicion en este heap y la otra posicion es en el otro heap
+        ArrayList<Integer> indices;// seria una lista donde la posicion 0 es la posicion en este heap y la otra posicion es en el otro heap
+
+        public Nodo(T objeto){
+            this.objeto = objeto;
+            this.indices = null;
+        }
 
         public Nodo (T objeto, ArrayList<Integer> indices) {
             this.objeto = objeto;
@@ -40,8 +45,9 @@ public class Heap<T> {
     }
     
     //agregar se le aplica a Heap<T>
-    public void agregar(Nodo objeto){
-       this.lista.add(objeto);
+    public void agregar(T objeto){
+        Nodo nodoObjeto = new Nodo(objeto, null);
+       this.lista.add(nodoObjeto);
         heapifyUp(lista.size() - 1);
     }
 
@@ -89,14 +95,14 @@ public class Heap<T> {
         return 2 * indice + 1;
     }
 
-    private Boolean EsHijoIzquierdo (Integer indice) {
+/*  private Boolean EsHijoIzquierdo (Integer indice) {
         return indice % 2 != 0;
     }
 
     private Boolean EsMayorQuePadre (Integer indice, Integer padre){
         return comparador.compare(lista.get(indice).objeto, lista.get(padre).objeto) > 0;
     }
-
+*/
     public Nodo sacarPrimero() {
         Nodo res = lista.get(0);
         this.eliminar(0);
