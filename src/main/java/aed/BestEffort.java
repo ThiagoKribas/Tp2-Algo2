@@ -22,9 +22,9 @@ public class BestEffort {
 /*         Comparadores.MasAntiguo comparadorMasAntiguo = new Comparadores.MasAntiguo();
         Comparadores.MasRedituable comparadorMasRedituable = new Comparadores.MasRedituable();
  */
-        Comparadores[] comparadores = new Comparadores[2];
-/*      comparadores[0] = comparadorMasAntiguo;
-        comparadores[1] = comparadorMasRedituable; */
+        ArrayList<T> comparadores;
+/*      comparadores.add(comparadorMasAntiguo);
+        comparadores.add(comparadorMasRedituable); */
         HeapManager = new HeapManager<Traslado>(comparadores);
 
         listaCiudades = new Ciudad[cantCiudades];
