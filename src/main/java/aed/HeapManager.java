@@ -6,11 +6,11 @@ public class HeapManager<T> {
 
 
     //Construcctor de HeapMaster vacio
-    public HeapManager(Comparadores[] comparadores){
+    public HeapManager(ArrayList<> comparadores){
         heapList = new ArrayList<>();
 
-        for (int index = 0; index < comparadores.length; index++) {
-            Heap<T> heap = new Heap<T>(comparadores[index]);
+        for (int index = 0; index < comparadores.size(); index++) {
+            Heap<T> heap = new Heap<T>(comparadores.get(index));
             heap.index = index;
         }
 
