@@ -1,32 +1,32 @@
 package aed;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Heap<T> {
 
     ArrayList<Nodo> lista;
-    Comparadores comparador;
+    Comparator<T> comparador;
     int index;
 
     private class Nodo {
         T objeto;
-        ArrayList<Integer> indices;// seria una lista donde la posicion 0 es la posicion en este heap y la otra posicion es en el otro heap
+        ArrayList<Integer> indices;
 
         public Nodo(T objeto){
             this.objeto = objeto;
-            this.indices = null;
+            this.indices = new ArrayList<>();
         }
-
     }
 
     //Constructor de Heap
-    public Heap(Comparadores comparador) {
+    public Heap(Comparator<T> comparador) {
         this.comparador = comparador;
         this.lista = new ArrayList<Nodo>();
         crearHeap();
     }
 
     // Constructor de Heap con lista
-    public Heap(Comparadores comparador, ArrayList<Nodo> array) {
+    public Heap(Comparator<T> comparador, ArrayList<Nodo> array) {
         this.comparador = comparador;
         this.lista = new ArrayList<Nodo>(array); // Copia de la lista
         crearHeap();
