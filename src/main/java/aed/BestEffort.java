@@ -36,6 +36,7 @@ public class BestEffort {
             listaCiudades[index] = new Ciudad(index);
         }
 
+      
         // Agregar traslados al HeapManager
         for (Traslado traslado : traslados) {
             HeapManager.agregar(traslado);
