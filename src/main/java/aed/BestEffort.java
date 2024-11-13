@@ -111,6 +111,9 @@ public class BestEffort {
     
     //Todas operaciones en O(1)
     private void compararStatsCiudades(ArrayList<Integer> listaId, Ciudad ciudad) {
+        if (listaCiudades.length == 0 || listaId.isEmpty()) {
+            return;
+        }
         Ciudad mayor = listaCiudades[listaId.get(0)];
         if(ciudad.ganancia == mayor.ganancia){
             listaId.add(ciudad.id);
