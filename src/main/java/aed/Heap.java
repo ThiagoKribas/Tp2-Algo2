@@ -20,12 +20,12 @@ public class Heap<T> {
         this.comparador = comparador;
         this.lista = new ArrayList<Nodo<T>>(array); // Copia de la lista
         this.index = 0;
-        crearHeap();
+        heapify();
     }
 
-    private void crearHeap() {
+    private void heapify() {
         for (int i = lista.size() / 2 - 1; i >= 0; i--) {
-            heapifyDown(i);
+            siftDown(i);
         }
     }
 
@@ -37,7 +37,7 @@ public class Heap<T> {
         // Inicializar solo un índice para el heap actual
         nodoObjeto.indices = new ArrayList<>();
         nodoObjeto.indices.add(lista.size() - 1);  // Solo agregamos un índice
-        heapifyUp(lista.size() - 1);
+        siftUp(lista.size() - 1);
     }
 
     // Método para agregar un nodo
@@ -48,7 +48,7 @@ public class Heap<T> {
         nodoObjeto.indices = new ArrayList<>();
         nodoObjeto.indices.add(lista.size() - 1);  // Solo agregamos un índice
         
-        heapifyUp(lista.size() - 1);
+        siftUp(lista.size() - 1);
     }
 
     // Método para eliminar un elemento por índice
@@ -57,7 +57,7 @@ public class Heap<T> {
         
         lista.set(indice, lista.get(lista.size() - 1));
         lista.remove(lista.size() - 1);
-        heapifyDown(indice);
+        siftDown(indice);
     } 
 
     // Método para eliminar un elemento por valor
@@ -88,7 +88,7 @@ public class Heap<T> {
     }
 
     // Heapify Up
-    private void heapifyUp(int indice) {
+    private void siftUp(int indice) {
         while (indice > 0) {
             int padre = (indice - 1) / 2;
             if (comparador.compare(lista.get(indice).objeto, lista.get(padre).objeto) > 0) {
@@ -101,7 +101,7 @@ public class Heap<T> {
     }
 
     // Heapify Down
-    private void heapifyDown(int indice) {
+    private void siftDown(int indice) {
         int size = lista.size();
         while (true) {
             int izquierdo = 2 * indice + 1;
@@ -158,11 +158,11 @@ public class Heap<T> {
         T valorAntiguo = nodo.objeto;
         nodo.objeto = nuevoValor;
 
-        // Comparar el nuevo valor con el antiguo para decidir si usar heapifyUp o heapifyDown
+        // Comparar el nuevo valor con el antiguo para decidir si usar siftUp o siftDown
         if (comparador.compare(nuevoValor, valorAntiguo) > 0) {
-            heapifyUp(indice);
+            siftUp(indice);
         } else {
-            heapifyDown(indice);
+            siftDown(indice);
         }
     }
 
