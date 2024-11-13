@@ -1,6 +1,7 @@
 package aed;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /* import aed.Comparadores.MasAntiguo;
 import aed.Comparadores.MasRedituable; */
@@ -18,23 +19,21 @@ public class BestEffort {
     public BestEffort(int cantCiudades, Traslado[] traslados){
         // O(|C| + |T|)
 
-        //TODO REVISAR COMPARADORES; CLASS; IMPLEMENTACION.
-/*         Comparadores.MasAntiguo comparadorMasAntiguo = new Comparadores.MasAntiguo();
-        Comparadores.MasRedituable comparadorMasRedituable = new Comparadores.MasRedituable();
- */
-        ArrayList<T> comparadores;
-/*      comparadores.add(comparadorMasAntiguo);
-        comparadores.add(comparadorMasRedituable); */
+        // Inicializar comparadores
+        ArrayList<Comparator<Traslado>> comparadores = new ArrayList<>();
+        comparadores.add(new Comparadores.MasAntiguo());
+        comparadores.add(new Comparadores.MasRedituable());
+
         HeapManager = new HeapManager<Traslado>(comparadores);
 
-        listaCiudades = new Ciudad[cantCiudades];
+        listaCiudades = new Ciudad[cantCiudades]; 
 
         // Itero cant de ciudades O(|C|)
         for (int index = 0; index < cantCiudades ; index++) {
             listaCiudades[index] = new Ciudad(index);
         }
 
-        // Itero traslados O(2|T|) -> O(|T|)
+        // Itero traslados O(T|) -> O(|T|)
         for (Traslado traslado : traslados) {
             HeapManager.agregar(traslado);
         }
