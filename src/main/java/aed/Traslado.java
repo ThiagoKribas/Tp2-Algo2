@@ -15,5 +15,9 @@ public class Traslado {
         this.gananciaNeta = gananciaNeta;
         this.timestamp = timestamp;
     }
+
+    public String toString(){
+        return "Traslado: " + id + " " + origen + " " + destino + " " + gananciaNeta + " " + timestamp + "\n";
+    }
     
 }

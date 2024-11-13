@@ -2,6 +2,7 @@ package aed;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Arrays;
 
 /* import aed.Comparadores.MasAntiguo;
 import aed.Comparadores.MasRedituable; */
@@ -17,27 +18,29 @@ public class BestEffort {
     Ciudad[] listaCiudades;
 
     public BestEffort(int cantCiudades, Traslado[] traslados){
-        // O(|C| + |T|)
+        // Inicializar variables de instancia
+        this.cantDespachos = 0;
+        this.gananciaDespachos = 0;
+        this.idCiudadesMayorGanancia = new ArrayList<>();
+        this.idCiudadesMayorPerdida = new ArrayList<>();
+        this.HeapSuperAvit = new Heap<>(new Comparadores.MasSuperHabit()); // Inicializar HeapSuperAvit con el comparador adecuado
 
-        // Inicializar comparadores
+        // Inicializar comparadores para HeapManager
         ArrayList<Comparator<Traslado>> comparadores = new ArrayList<>();
         comparadores.add(new Comparadores.MasAntiguo());
         comparadores.add(new Comparadores.MasRedituable());
+        this.HeapManager = new HeapManager<Traslado>(comparadores);
 
-        HeapManager = new HeapManager<Traslado>(comparadores);
-
+        // Inicializar lista de ciudades
         listaCiudades = new Ciudad[cantCiudades]; 
-
-        // Itero cant de ciudades O(|C|)
         for (int index = 0; index < cantCiudades ; index++) {
             listaCiudades[index] = new Ciudad(index);
         }
 
-        // Itero traslados O(T|) -> O(|T|)
+        // Agregar traslados al HeapManager
         for (Traslado traslado : traslados) {
             HeapManager.agregar(traslado);
         }
-
     }
 
     public void registrarTraslados(Traslado[] traslados){
@@ -50,7 +53,7 @@ public class BestEffort {
     }
 
     public int[] despacharMasRedituables(int n){
-        //  O(n (log(|T |) + log(|C|)))
+        // O(n (log(|T |) + log(|C|)))
         
         if(n > HeapManager.size()){
             n = HeapManager.size();
@@ -61,6 +64,8 @@ public class BestEffort {
         // Modificamos las variables en O(1)
         for (int index = 0; index < n; index++) {
             Traslado traslado = HeapManager.sacar(1);
+            if(traslado == null) break;
+
             Ciudad origen = listaCiudades[traslado.origen];
             Ciudad destino = listaCiudades[traslado.destino];
             
@@ -133,6 +138,10 @@ public class BestEffort {
     public int gananciaPromedioPorTraslado(){
         //O(1)
         return (gananciaDespachos / cantDespachos);
+    }
+
+    public String toString(){
+        return "HeapManager: " + HeapManager.toString() +"\n";
     }
     
 }

@@ -32,29 +32,12 @@ public class HeapManager<T> {
         }
     }
 
-    public int size() {
-        if (heapList.isEmpty()) return 0;
-        return heapList.get(0).size();
-    }
-
     // Agregar elemento a todos los heaps
     public void agregar(T valor) {
-        for (Heap<T> heap : heapList) {
-            heap.agregar(valor);
-        }
-    }
-
-    // Eliminar objeto de todos los heaps dado un índice
-    public void eliminar(int heapIndex, int objIndex) {
-        if (heapIndex < 0 || heapIndex >= heapList.size()) return;
-        Heap<T> heap = heapList.get(heapIndex);
-        if (objIndex < 0 || objIndex >= heap.size()) return;
-
-        T elemento = heap.get(objIndex);
-        if (elemento == null) return;
-
-        for (Heap<T> h : heapList) {
-            h.eliminarElemento(elemento);
+        if(valor != null){
+            for (Heap<T> heap : heapList) {
+                heap.agregar(valor);
+            }
         }
     }
 
@@ -72,6 +55,20 @@ public class HeapManager<T> {
         return elemento;
     }
 
+    // Eliminar objeto de todos los heaps dado un índice
+    public void eliminar(int heapIndex, int objIndex) {
+        if (heapIndex < 0 || heapIndex >= heapList.size()) return;
+        Heap<T> heap = heapList.get(heapIndex);
+        if (objIndex < 0 || objIndex >= heap.size()) return;
+
+        T elemento = heap.get(objIndex);
+        if (elemento == null) return;
+
+        for (Heap<T> h : heapList) {
+            h.eliminarElemento(elemento);
+        }
+    }
+
     // Obtener el primer elemento de cada heap
     public ArrayList<T> verPrimero() {
         ArrayList<T> res = new ArrayList<>();
@@ -81,8 +78,17 @@ public class HeapManager<T> {
         return res;
     }
 
+    public int size(){
+        if(heapList.isEmpty()) return 0;
+        return heapList.get(0).size();
+    }
+
     @Override
     public String toString() {
-        return heapList.toString();
+        StringBuilder res = new StringBuilder();
+        for (int i = 0; i < heapList.size(); i++) {
+            res.append("Heap ").append(i).append(": ").append(heapList.get(i).toString()).append("\n");
+        }
+        return res.toString();
     }
 }
