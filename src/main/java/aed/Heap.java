@@ -18,7 +18,7 @@ public class Heap<T> {
         }
     }
 
-    //Constructor de Heap
+    // Constructor de Heap
     public Heap(Comparator<T> comparador) {
         this.comparador = comparador;
         this.lista = new ArrayList<Nodo>();
@@ -32,33 +32,50 @@ public class Heap<T> {
         crearHeap();
     }
 
-
-
     private void crearHeap() {
         for (int i = lista.size() / 2 - 1; i >= 0; i--) {
             heapifyDown(i);
         }
     }
-    
-    //agregar se le aplica a Heap<T>
+
+    // Método para agregar un elemento
     public void agregar(T objeto){
         Nodo nodoObjeto = new Nodo(objeto);
         this.lista.add(nodoObjeto);
         
-        // Inicializar los índices para todos los heaps
+        // Inicializar solo un índice para el heap actual
         nodoObjeto.indices = new ArrayList<>();
-        for (int i = 0; i < lista.size(); i++) {
-            nodoObjeto.indices.add(lista.size() - 1);
-        }
+        nodoObjeto.indices.add(lista.size() - 1);  // Solo agregamos un índice
         
         heapifyUp(lista.size() - 1);
     }
 
+    // Método para eliminar un elemento por índice
     public void eliminar(Integer indice){
+        if(indice >= lista.size()) return;
+        
         lista.set(indice, lista.get(lista.size() - 1));
         lista.remove(lista.size() - 1);
         heapifyDown(indice);
     } 
+
+    // Método para eliminar un elemento por valor
+    public void eliminarElemento(T elemento) {
+        for(int i = 0; i < lista.size(); i++) {
+            if(lista.get(i).objeto.equals(elemento)) {
+                eliminar(i);
+                break; // Suponiendo elementos únicos
+            }
+        }
+    }
+
+    // Método para obtener un elemento por índice
+    public T get(int index){
+        if(index >= 0 && index < lista.size()){
+            return lista.get(index).objeto;
+        }
+        return null;
+    }
 
     public int size(){
         return lista.size();
@@ -68,77 +85,8 @@ public class Heap<T> {
         Nodo nodo = lista.get(indice);
         return nodo.indices;
     }
-    
-    // private void heapify(ArrayList <Nodo> heap){ //complejidad = O(n)
 
-    //     int posicion = lista.size() - 1; 
-        
-    //     while (posicion > 0){
-
-    //         if (EsHijoDerecho(posicion)){ 
-
-    //             Integer padre = (posicion-2)/2;
-
-    //             if (EsMayorQuePadre(posicion,padre)){
-    //                 lista.set(padre, lista.get(posicion));
-    //                 lista.set(posicion , lista.get(padre));
-    //             }
-                
-    //         } else if (EsHijoIzquierdo(posicion)) {
-
-    //             Integer padre = (posicion-1)/2;
-                
-    //             if (EsMayorQuePadre(posicion,padre)){
-    //                 lista.set(padre , lista.get(posicion));
-    //                 lista.set(posicion , lista.get(padre));
-    //             }
-                
-    //         }
-            
-    //         posicion = posicion - 1;
-    //     }
-    // }
-
-    private Integer hijoDerecho (Integer indice) {
-        return 2 * indice + 2;
-    }
-
-    private Integer hijoIzquierdo (Integer indice) {
-        return 2 * indice + 1;
-    }
-
-/*  private Boolean EsHijoIzquierdo (Integer indice) {
-        return indice % 2 != 0;
-    }
-
-    private Boolean EsMayorQuePadre (Integer indice, Integer padre){
-        return comparador.compare(lista.get(indice).objeto, lista.get(padre).objeto) > 0;
-    }
-*/
-    public T sacarPrimero() {
-        T res = lista.get(0).objeto;
-        this.eliminar(0);
-        return res;
-    }
-    
-    public T obtenerPrimero() {
-        return (lista.get(0).objeto);
-    }
-
-    public void modificar(int indice, T nuevoValor) {
-        Nodo nodo = lista.get(indice);
-        T valorAntiguo = nodo.objeto;
-        nodo.objeto = nuevoValor;
-
-        // Comparar el nuevo valor con el antiguo para decidir si usar heapifyUp o heapifyDown
-        if (comparador.compare(nuevoValor, valorAntiguo) > 0) {
-            heapifyUp(indice);
-        } else {
-            heapifyDown(indice);
-        }
-    }
-
-    // Método para mantener la propiedad de heap al insertar
+    // Heapify Up
     private void heapifyUp(int indice) {
         while (indice > 0) {
             int padre = (indice - 1) / 2;
@@ -151,48 +99,77 @@ public class Heap<T> {
         }
     }
 
-    // Método para mantener la propiedad de heap al eliminar o modificar
+    // Heapify Down
     private void heapifyDown(int indice) {
-        int mayor = indice;
-        int hijoIzq = hijoIzquierdo(indice);
-        int hijoDer = hijoDerecho(indice);
+        int size = lista.size();
+        while (true) {
+            int izquierdo = 2 * indice + 1;
+            int derecho = 2 * indice + 2;
+            int mayor = indice;
 
-        if (hijoIzq < lista.size() && comparador.compare(lista.get(hijoIzq).objeto, lista.get(mayor).objeto) > 0) {
-            mayor = hijoIzq;
-        }
+            if (izquierdo < size && comparador.compare(lista.get(izquierdo).objeto, lista.get(mayor).objeto) > 0) {
+                mayor = izquierdo;
+            }
 
-        if (hijoDer < lista.size() && comparador.compare(lista.get(hijoDer).objeto, lista.get(mayor).objeto) > 0) {
-            mayor = hijoDer;
-        }
+            if (derecho < size && comparador.compare(lista.get(derecho).objeto, lista.get(mayor).objeto) > 0) {
+                mayor = derecho;
+            }
 
-        if (mayor != indice) {
-            swap(indice, mayor);
-            heapifyDown(mayor);
-        }
-    }
-
-    // Método para intercambiar nodos
-    private void swap(int i, int j) {
-        Nodo temp = lista.get(i);
-        lista.set(i, lista.get(j));
-        lista.set(j, temp);
-        
-        // Actualizar índices
-        if (lista.get(i).indices != null && !lista.get(i).indices.isEmpty()) {
-            lista.get(i).indices.set(index, i);
-        }
-        if (lista.get(j).indices != null && !lista.get(j).indices.isEmpty()) {
-            lista.get(j).indices.set(index, j);
-        }
-    }
-
-    public void eliminarElemento(T elemento) {
-        for (int i = 0; i < size(); i++) {
-            if (lista.get(i).objeto.equals(elemento)) {
-                eliminar(i);
+            if (mayor != indice) {
+                swap(indice, mayor);
+                indice = mayor;
+            } else {
                 break;
             }
         }
     }
 
+    // Método para intercambiar elementos y actualizar índices
+    private void swap(int i, int j) {
+        Nodo temp = lista.get(i);
+        lista.set(i, lista.get(j));
+        lista.set(j, temp);
+        
+        // Actualizar índices solo para el heap actual
+        if (lista.get(i).indices != null && !lista.get(i).indices.isEmpty()) {
+            lista.get(i).indices.set(0, i);  // Actualizamos el único índice
+        }
+        if (lista.get(j).indices != null && !lista.get(j).indices.isEmpty()) {
+            lista.get(j).indices.set(0, j);  // Actualizamos el único índice
+        }
+    }
+
+    public T sacarPrimero() {
+        if(lista.isEmpty()) return null;
+        T res = lista.get(0).objeto;
+        eliminar(0);
+        return res;
+    }
+    
+    public T obtenerPrimero() {
+        if(lista.isEmpty()) return null;
+        return lista.get(0).objeto;
+    }
+
+    public void modificar(int indice, T nuevoValor) {
+        if(indice >= lista.size()) return;
+        Nodo nodo = lista.get(indice);
+        T valorAntiguo = nodo.objeto;
+        nodo.objeto = nuevoValor;
+
+        // Comparar el nuevo valor con el antiguo para decidir si usar heapifyUp o heapifyDown
+        if (comparador.compare(nuevoValor, valorAntiguo) > 0) {
+            heapifyUp(indice);
+        } else {
+            heapifyDown(indice);
+        }
+    }
+
+    public String toString(){
+        StringBuilder res = new StringBuilder();
+        for (Nodo nodo : lista){
+            res.append(nodo.objeto.toString()).append(" ");
+        }
+        return res.toString();
+    }
 }
