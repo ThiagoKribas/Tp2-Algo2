@@ -23,6 +23,8 @@ public class Heap<T> {
         heapify();
     }
 
+
+    // CHEQUEAR FUNCIONA CORRECTAMENTE
     private void heapify() {
         for (int i = lista.size() / 2 - 1; i >= 0; i--) {
             siftDown(i);
@@ -43,9 +45,8 @@ public class Heap<T> {
     // Método para agregar un nodo
     public void agregar(Nodo<T> nodoObjeto){
         this.lista.add(nodoObjeto);
-        
-        // Inicializar solo un índice para el heap actual
-        nodoObjeto.indices = new ArrayList<>();
+
+        // Agregamos el indice al nodo actual
         nodoObjeto.indices.add(lista.size() - 1);  // Solo agregamos un índice
         
         siftUp(lista.size() - 1);
@@ -53,10 +54,11 @@ public class Heap<T> {
 
     // Método para eliminar un elemento por índice
     public void eliminar(Integer indice){
-        if(indice >= lista.size()) return;
-        
-        lista.set(indice, lista.get(lista.size() - 1));
+        if(indice >= lista.size() || indice < 0) return; 
+        Nodo<T> ultimoNodo = lista.get(lista.size() - 1);
+        lista.set(indice, ultimoNodo);
         lista.remove(lista.size() - 1);
+        ultimoNodo.indices.set(index, indice);
         siftDown(indice);
     } 
 
@@ -87,7 +89,7 @@ public class Heap<T> {
         return nodo.indices;
     }
 
-    // Heapify Up
+    // Sift Up
     private void siftUp(int indice) {
         while (indice > 0) {
             int padre = (indice - 1) / 2;
@@ -100,7 +102,7 @@ public class Heap<T> {
         }
     }
 
-    // Heapify Down
+    // Sift Down
     private void siftDown(int indice) {
         int size = lista.size();
         while (true) {
