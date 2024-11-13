@@ -1,34 +1,30 @@
 package aed;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class HeapManager<T> {
     private ArrayList<Heap<T>> heapList;
 
 
     //Construcctor de HeapMaster vacio
-    public HeapManager(ArrayList<> comparadores){
+    public HeapManager(ArrayList<Comparator<T>> comparadores){
         heapList = new ArrayList<>();
 
-        for (int index = 0; index < comparadores.size(); index++) {
-            Heap<T> heap = new Heap<T>(comparadores.get(index));
-            heap.index = index;
-        }
-
-        for (Comparadores comparador : comparadores) {
-
-            Heap<T> heap = new Heap<T>(comparador);
+        for (int i = 0; i < comparadores.size(); i++) {
+            Heap<T> heap = new Heap<>(comparadores.get(i));
+            heap.index = i;
             heapList.add(heap);
-
         }
     }
 
     // Construcctor de HeapMaster con datos
-    public HeapManager(Comparadores[] comparadores, T[] datosIniciales) {
+    public HeapManager(Comparator<T>[] comparadores, T[] datosIniciales) {
         heapList = new ArrayList<>();
 
         for (int index = 0; index < comparadores.length; index++) {
-            Heap<T> heap = new Heap<T>(comparadores[index]);
+            Heap<T> heap = new Heap<T>((Comparator<T>)comparadores[index]);
             heap.index = index;
+            heapList.add(heap);
         }
 
         for (T dato : datosIniciales) {
@@ -71,19 +67,18 @@ public class HeapManager<T> {
     //Obtengo el primer objeto de un heap y elimino del resto O(heapList.size() * log(|T|))
     // heapList.size() es constante en este problema -> O(log(|T|))
     public T sacar(int index){
-        Heap<T> heapObj = heapList.get(index);
-        ArrayList<Integer> indicesPrimero = heapObj.obtenerIndices(0);
-        T obj = heapObj.obtenerPrimero();
-
-        eliminar(indicesPrimero.get(0), 0);
-
-/*
-        for (int i = 0; i < heapList.size(); index++) {
-            if (index != i) {
-                heapList.get(i).eliminar(indicesPrimero.get(i));
-            }
+        if (index >= heapList.size() || heapList.get(index).size() == 0) {
+            throw new IllegalStateException("Heap vacío o índice inválido");
         }
- */
-        return obj;
+        
+        Heap<T> heap = heapList.get(index);
+        T elemento = heap.obtenerPrimero();
+        
+        // Eliminar el elemento de todos los heaps
+        for (Heap<T> h : heapList) {
+            h.eliminarElemento(elemento);
+        }
+        
+        return elemento;
     }
 }

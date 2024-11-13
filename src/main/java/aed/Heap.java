@@ -44,7 +44,13 @@ public class Heap<T> {
     public void agregar(T objeto){
         Nodo nodoObjeto = new Nodo(objeto);
         this.lista.add(nodoObjeto);
-        nodoObjeto.indices.add(this.lista.size() - 1);
+        
+        // Inicializar los índices para todos los heaps
+        nodoObjeto.indices = new ArrayList<>();
+        for (int i = 0; i < lista.size(); i++) {
+            nodoObjeto.indices.add(lista.size() - 1);
+        }
+        
         heapifyUp(lista.size() - 1);
     }
 
@@ -135,15 +141,13 @@ public class Heap<T> {
     // Método para mantener la propiedad de heap al insertar
     private void heapifyUp(int indice) {
         while (indice > 0) {
-            int indiceDelPadre = (indice - 1) % 2;
-
-            if (comparador.compare(lista.get(indice).objeto, lista.get(indiceDelPadre).objeto) > 0) {
-
-                // si el padre tiene menor prioridad, subo al hijo ✅
-                swap(indice, indiceDelPadre);
-                indice = indiceDelPadre;
-
-            } else {break;}
+            int padre = (indice - 1) / 2;
+            if (comparador.compare(lista.get(indice).objeto, lista.get(padre).objeto) > 0) {
+                swap(indice, padre);
+                indice = padre;
+            } else {
+                break;
+            }
         }
     }
 
@@ -169,25 +173,26 @@ public class Heap<T> {
 
     // Método para intercambiar nodos
     private void swap(int i, int j) {
-        
-        Nodo subir = lista.get(i);
+        Nodo temp = lista.get(i);
         lista.set(i, lista.get(j));
-        lista.set(j, subir);
-
-        // Si tiene indices los actualiza (TODO: cambiar a diccionarios)
-
-        if (lista.get(i).indices != null) {
-
-            lista.get(i).indices.set(0, i);
-
+        lista.set(j, temp);
+        
+        // Actualizar índices
+        if (lista.get(i).indices != null && !lista.get(i).indices.isEmpty()) {
+            lista.get(i).indices.set(index, i);
         }
-
-        if (lista.get(j).indices != null) {
-
-            lista.get(j).indices.set(0, j);
-
+        if (lista.get(j).indices != null && !lista.get(j).indices.isEmpty()) {
+            lista.get(j).indices.set(index, j);
         }
+    }
 
+    public void eliminarElemento(T elemento) {
+        for (int i = 0; i < size(); i++) {
+            if (lista.get(i).objeto.equals(elemento)) {
+                eliminar(i);
+                break;
+            }
+        }
     }
 
 }
