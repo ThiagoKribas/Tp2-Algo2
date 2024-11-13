@@ -35,8 +35,9 @@ public class HeapManager<T> {
     // Agregar elemento a todos los heaps
     public void agregar(T valor) {
         if(valor != null){
+            Nodo<T> nodoValor = new Nodo<T>(valor);
             for (Heap<T> heap : heapList) {
-                heap.agregar(valor);
+                heap.agregar(nodoValor);
             }
         }
     }

@@ -4,31 +4,22 @@ import java.util.Comparator;
 
 public class Heap<T> {
 
-    ArrayList<Nodo> lista;
+    ArrayList<Nodo<T>> lista;
     Comparator<T> comparador;
     int index;
-
-    private class Nodo {
-        T objeto;
-        ArrayList<Integer> indices;
-
-        public Nodo(T objeto){
-            this.objeto = objeto;
-            this.indices = new ArrayList<>();
-        }
-    }
 
     // Constructor de Heap
     public Heap(Comparator<T> comparador) {
         this.comparador = comparador;
-        this.lista = new ArrayList<Nodo>();
-        crearHeap();
+        this.lista = new ArrayList<Nodo<T>>();
+        this.index = 0;
     }
 
     // Constructor de Heap con lista
-    public Heap(Comparator<T> comparador, ArrayList<Nodo> array) {
+    public Heap(Comparator<T> comparador, ArrayList<Nodo<T>> array) {
         this.comparador = comparador;
-        this.lista = new ArrayList<Nodo>(array); // Copia de la lista
+        this.lista = new ArrayList<Nodo<T>>(array); // Copia de la lista
+        this.index = 0;
         crearHeap();
     }
 
@@ -40,7 +31,17 @@ public class Heap<T> {
 
     // Método para agregar un elemento
     public void agregar(T objeto){
-        Nodo nodoObjeto = new Nodo(objeto);
+        Nodo<T> nodoObjeto = new Nodo<T>(objeto);
+        this.lista.add(nodoObjeto);
+        
+        // Inicializar solo un índice para el heap actual
+        nodoObjeto.indices = new ArrayList<>();
+        nodoObjeto.indices.add(lista.size() - 1);  // Solo agregamos un índice
+        heapifyUp(lista.size() - 1);
+    }
+
+    // Método para agregar un nodo
+    public void agregar(Nodo<T> nodoObjeto){
         this.lista.add(nodoObjeto);
         
         // Inicializar solo un índice para el heap actual
@@ -82,7 +83,7 @@ public class Heap<T> {
     }
 
     public ArrayList<Integer> obtenerIndices(Integer indice){
-        Nodo nodo = lista.get(indice);
+        Nodo<T> nodo = lista.get(indice);
         return nodo.indices;
     }
 
@@ -126,7 +127,7 @@ public class Heap<T> {
 
     // Método para intercambiar elementos y actualizar índices
     private void swap(int i, int j) {
-        Nodo temp = lista.get(i);
+        Nodo<T> temp = lista.get(i);
         lista.set(i, lista.get(j));
         lista.set(j, temp);
         
@@ -153,7 +154,7 @@ public class Heap<T> {
 
     public void modificar(int indice, T nuevoValor) {
         if(indice >= lista.size()) return;
-        Nodo nodo = lista.get(indice);
+        Nodo<T> nodo = lista.get(indice);
         T valorAntiguo = nodo.objeto;
         nodo.objeto = nuevoValor;
 
@@ -167,7 +168,7 @@ public class Heap<T> {
 
     public String toString(){
         StringBuilder res = new StringBuilder();
-        for (Nodo nodo : lista){
+        for (Nodo<T> nodo : lista){
             res.append(nodo.objeto.toString()).append(" ");
         }
         return res.toString();
