@@ -55,8 +55,8 @@ public class BestEffort {
     public int[] despacharMasRedituables(int n){
         // O(n (log(|T |) + log(|C|)))
         
-        if(n > HeapManager.size()){
-            n = HeapManager.size();
+        if(n > this.HeapManager.size()){
+            n = this.HeapManager.size();
         }
         int[] MasRedituables = new int[n];
 

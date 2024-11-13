@@ -44,30 +44,35 @@ public class HeapManager<T> {
 
     // Sacar el primer elemento de un heap y eliminarlo de los demás
     public T sacar(int index) {
-        if (index < 0 || index >= heapList.size()) return null;
+        if (index < 0 || index >= heapList.size()){
+             return null;}
         Heap<T> heap = heapList.get(index);
         T elemento = heap.obtenerPrimero();
 
         // Eliminar el elemento de todos los heaps
-        for (Heap<T> h : heapList) {
-            h.eliminarElemento(elemento);
-        }
+        eliminar(index,0);
 
         return elemento;
     }
 
     // Eliminar objeto de todos los heaps dado un índice
-    public void eliminar(int heapIndex, int objIndex) {
-        if (heapIndex < 0 || heapIndex >= heapList.size()) return;
-        Heap<T> heap = heapList.get(heapIndex);
-        if (objIndex < 0 || objIndex >= heap.size()) return;
+        public void eliminar(int Objindex, int heapIndex){
 
-        T elemento = heap.get(objIndex);
-        if (elemento == null) return;
-
-        for (Heap<T> h : heapList) {
-            h.eliminarElemento(elemento);
+        if (heapIndex >= heapList.size()){
+            return;
         }
+
+        Heap<T> heap = heapList.get(heapIndex);
+
+        if (Objindex >= heap.size()){
+            return;
+        }
+
+        ArrayList<Integer> indicesObj = heap.obtenerIndices(Objindex);
+
+        for (int index = 0; index < heapList.size(); index++) {
+            heapList.get(index).eliminar(indicesObj.get(index));                
+        }   
     }
 
     // Obtener el primer elemento de cada heap
