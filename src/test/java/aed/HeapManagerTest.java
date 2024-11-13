@@ -88,7 +88,7 @@ public class HeapManagerTest {
         manager.agregar(7);
 
         // Sacar un elemento del min heap
-        Integer elementoSacado = manager.sacar(0);  // Debería ser 3
+        Integer elementoSacado = manager.sacar(1);  // Debería ser 3
         assertEquals(Integer.valueOf(3), elementoSacado);
 
         // Verificar que el elemento ya no está en ningún heap
@@ -111,7 +111,7 @@ public class HeapManagerTest {
         manager.agregar(7);
 
         // Sacar un elemento del min heap
-        Integer sacado1 = manager.sacar(0);  // Debería ser 3
+        Integer sacado1 = manager.sacar(1);  // Debería ser 3
         assertEquals(Integer.valueOf(3), sacado1);
         assertEquals(2, manager.size());
 
@@ -124,8 +124,8 @@ public class HeapManagerTest {
         assertEquals(6, manager.size());
 
         ArrayList<Integer> primeros = manager.verPrimero();
-        assertEquals(Integer.valueOf(1), primeros.get(0));  // Nuevo min heap
-        assertEquals(Integer.valueOf(9), primeros.get(1));  // Max heap
+        assertEquals(Integer.valueOf(1), primeros.get(1));  // Nuevo min heap
+        assertEquals(Integer.valueOf(9), primeros.get(0));  // Max heap
     }
 
     @Test
@@ -146,8 +146,8 @@ public class HeapManagerTest {
     @Test
     public void testMultiplesHeaps() {
         ArrayList<Comparator<Integer>> comparadores = new ArrayList<>();
-        comparadores.add(ascendente);  // Min heap
-        comparadores.add(descendente); // Max heap
+        comparadores.add(ascendente);  // Max heap
+        comparadores.add(descendente); // Min heap
         comparadores.add((a, b) -> Integer.compare(Math.abs(a), Math.abs(b))); // Abs heap
 
         HeapManager<Integer> manager = new HeapManager<>(comparadores);
@@ -156,9 +156,9 @@ public class HeapManagerTest {
         manager.agregar(-7);
 
         ArrayList<Integer> primeros = manager.verPrimero();
-        assertEquals(Integer.valueOf(-7), primeros.get(0));  // Min heap debería ser -7
-        assertEquals(Integer.valueOf(3), primeros.get(1));   // Max heap debería ser 3
-        assertEquals(Integer.valueOf(3), primeros.get(2));  // Abs heap debería ser 3 (|3| < |-5| < |-7|)
+        assertEquals(Integer.valueOf(-7), primeros.get(1));  // Min heap debería ser -7
+        assertEquals(Integer.valueOf(3), primeros.get(0));   // Max heap debería ser 3
+        assertEquals(Integer.valueOf(-7), primeros.get(2));  // Abs heap debería ser -7 (|3| < |-5| < |-7|)
 
         assertEquals(3, manager.size());
     }

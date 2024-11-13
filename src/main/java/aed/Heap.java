@@ -135,10 +135,10 @@ public class Heap<T> {
         
         // Actualizar índices solo para el heap actual
         if (lista.get(i).indices != null && !lista.get(i).indices.isEmpty()) {
-            lista.get(i).indices.set(0, i);  // Actualizamos el único índice
+            lista.get(i).indices.set(index, i);  // Actualizamos el único índice
         }
         if (lista.get(j).indices != null && !lista.get(j).indices.isEmpty()) {
-            lista.get(j).indices.set(0, j);  // Actualizamos el único índice
+            lista.get(j).indices.set(index, j);  // Actualizamos el único índice
         }
     }
 
