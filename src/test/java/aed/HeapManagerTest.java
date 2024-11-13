@@ -32,8 +32,8 @@ public class HeapManagerTest {
         assertEquals(3, manager.size());
 
         ArrayList<Integer> primeros = manager.verPrimero();
-        assertEquals(Integer.valueOf(3), primeros.get(0));  // Min heap
-        assertEquals(Integer.valueOf(7), primeros.get(1));  // Max heap
+        assertEquals(Integer.valueOf(3), primeros.get(1));  // Min heap
+        assertEquals(Integer.valueOf(7), primeros.get(0));  // Max heap
     }
 
     @Test
@@ -50,8 +50,8 @@ public class HeapManagerTest {
         assertEquals(3, manager.size());
 
         ArrayList<Integer> primeros = manager.verPrimero();
-        assertEquals(Integer.valueOf(3), primeros.get(0));  // Min heap
-        assertEquals(Integer.valueOf(7), primeros.get(1));  // Max heap
+        assertEquals(Integer.valueOf(3), primeros.get(1));  // Min heap
+        assertEquals(Integer.valueOf(7), primeros.get(0));  // Max heap
     }
 
     @Test
@@ -66,14 +66,14 @@ public class HeapManagerTest {
         manager.agregar(7);
 
         int tamañoInicial = manager.size();
-        manager.eliminar(0, 0);  // Eliminar el primer elemento del min heap (3)
+        manager.eliminar(0, 1);  // Eliminar el primer elemento del min heap (3)
         assertEquals(tamañoInicial - 1, manager.size());
 
         ArrayList<Integer> primeros = manager.verPrimero();
         //debug
         System.out.println(primeros);
-        assertEquals(Integer.valueOf(5), primeros.get(0));  // Nuevo min heap
-        assertEquals(Integer.valueOf(7), primeros.get(1));  // Max heap sigue siendo 7
+        assertEquals(Integer.valueOf(5), primeros.get(1));  // Nuevo min heap
+        assertEquals(Integer.valueOf(7), primeros.get(0));  // Max heap sigue siendo 7
     }
 
     @Test
