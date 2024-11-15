@@ -82,9 +82,8 @@ public class BestEffort {
             HeapManagerSuperAvit.actualizar(origen.id);
             HeapManagerSuperAvit.actualizar(destino.id);
 
-            //PREGUNTAR SI PERDIMOS/GANAMOS COMPLEJIDAD
-           compararGananciaCiudades(this.idCiudadesMayorGanancia, origen);
-           compararPerdidaCiudades(this.idCiudadesMayorPerdida, destino); 
+            compararGananciaCiudades(this.idCiudadesMayorGanancia, origen);
+            compararPerdidaCiudades(this.idCiudadesMayorPerdida, destino); 
         }
         return MasRedituables;
     }
