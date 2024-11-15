@@ -15,23 +15,6 @@ public class Heap<T> {
         this.index = 0;
     }
 
-/*     // Constructor de Heap con lista
-    public Heap(Comparator<T> comparador, ArrayList<Nodo<T>> array) {
-        this.comparador = comparador;
-        this.lista = new ArrayList<Nodo<T>>(array); // Copia de la lista
-        this.index = 0;
-        heapify();
-    }
-
-
-    // CHEQUEAR FUNCIONA CORRECTAMENTE
-    private void heapify() {
-        for (int i = lista.size() / 2 - 1; i >= 0; i--) {
-            siftDown(i);
-        }
-    }
- */
-
     // Método para agregar un elemento
     public void agregar(T objeto){
         Nodo<T> nodoObjeto = new Nodo<T>(objeto);
