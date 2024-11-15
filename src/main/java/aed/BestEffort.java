@@ -3,9 +3,6 @@ package aed;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-/* import aed.Comparadores.MasAntiguo;
-import aed.Comparadores.MasRedituable; */
-
 public class BestEffort {
     
     int cantDespachos;
@@ -13,31 +10,38 @@ public class BestEffort {
     ArrayList<Integer> idCiudadesMayorGanancia;
     ArrayList<Integer> idCiudadesMayorPerdida;
     HeapManager<Traslado> HeapManager;
-    Heap<Ciudad> HeapSuperAvit;
+    HeapManager<Ciudad> HeapManagerSuperAvit;
     Ciudad[] listaCiudades;
 
     public BestEffort(int cantCiudades, Traslado[] traslados){
-        // Inicializar variables de instancia
+        // O(|T| + |C|)
+
+
+        // Inicializar variables de instancia -> O(1)
         this.cantDespachos = 0;
         this.gananciaDespachos = 0;
         this.idCiudadesMayorGanancia = new ArrayList<>();
         this.idCiudadesMayorPerdida = new ArrayList<>();
-        this.HeapSuperAvit = new Heap<>(new Comparadores.MasSuperHabit()); // Inicializar HeapSuperAvit con el comparador adecuado
 
-        // Inicializar comparadores para HeapManager
+        // Inicializar comparadores para los HeapManagers -> O(1)
         ArrayList<Comparator<Traslado>> comparadores = new ArrayList<>();
         comparadores.add(new Comparadores.MasAntiguo());
         comparadores.add(new Comparadores.MasRedituable());
+        ArrayList<Comparator<Ciudad>> comparadorSuperavit = new ArrayList<>();
+        comparadorSuperavit.add(new Comparadores.MasSuperHabit());
         this.HeapManager = new HeapManager<Traslado>(comparadores);
+        this.HeapManagerSuperAvit = new HeapManager<Ciudad>(comparadorSuperavit); // Inicializar HeapManagerSuperAvit con el comparador adecuado
 
-        // Inicializar lista de ciudades
+        // Inicializar lista de ciudades -> O(|C|)
         listaCiudades = new Ciudad[cantCiudades]; 
         for (int index = 0; index < cantCiudades ; index++) {
             listaCiudades[index] = new Ciudad(index);
         }
-
+        
+        // Inicializar HeapManagerSuperAvit con lista de ciudades -> O(|C|)
+        this.HeapManagerSuperAvit = new HeapManager<Ciudad>(comparadorSuperavit, listaCiudades); // Inicializar HeapManagerSuperAvit con el comparador adecuado
       
-        // Agregar traslados al HeapManager
+        // Agregar traslados al HeapManager -> O(|T|)
         for (Traslado traslado : traslados) {
             HeapManager.agregar(traslado);
         }
@@ -70,11 +74,13 @@ public class BestEffort {
             Ciudad destino = listaCiudades[traslado.destino];
             
             MasRedituables[index] = traslado.id;
-            origen.ganancia += traslado.gananciaNeta;
-            destino.perdida += traslado.gananciaNeta;
+            origen.modificar(traslado.gananciaNeta, 0);
+            destino.modificar(0, traslado.gananciaNeta);
             gananciaDespachos += traslado.gananciaNeta;
             cantDespachos += 1;
 
+            HeapManagerSuperAvit.actualizar(origen.id);
+            HeapManagerSuperAvit.actualizar(destino.id);
 
             //PREGUNTAR SI PERDIMOS/GANAMOS COMPLEJIDAD
            compararGananciaCiudades(this.idCiudadesMayorGanancia, origen);
@@ -100,11 +106,13 @@ public class BestEffort {
             Ciudad destino = listaCiudades[traslado.destino];
             
             MasAntiguos[index] = traslado.id;
-            origen.ganancia += traslado.gananciaNeta;
-            destino.perdida += traslado.gananciaNeta;
+            origen.modificar(traslado.gananciaNeta, 0);
+            destino.modificar(0, traslado.gananciaNeta);
             gananciaDespachos += traslado.gananciaNeta;
             cantDespachos += 1;
-            
+            HeapManagerSuperAvit.actualizar(origen.id);
+            HeapManagerSuperAvit.actualizar(destino.id);
+
             compararGananciaCiudades(this.idCiudadesMayorGanancia, origen);
             compararPerdidaCiudades(this.idCiudadesMayorPerdida, destino); 
         }
@@ -145,7 +153,7 @@ public class BestEffort {
             return;
         }
         Ciudad mayor = listaCiudades[listaId.get(0)];
-        
+
         if (mayor == ciudad){
             if (listaId.size() >= 2){
             mayor = listaCiudades[listaId.get(1)];
@@ -160,12 +168,10 @@ public class BestEffort {
         return;
     }
 
-    
-
 
     public int ciudadConMayorSuperavit(){
-        // O(1)
-        return HeapSuperAvit.obtenerPrimero().id;
+        //O(1)
+        return HeapManagerSuperAvit.obtener(0).id;
     }
 
     public ArrayList<Integer> ciudadesConMayorGanancia(){

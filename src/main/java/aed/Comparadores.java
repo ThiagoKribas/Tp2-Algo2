@@ -21,8 +21,8 @@ class Comparadores {
         }
         return value;
     }
-    // Comparacion dinamica de atributo Traslado.timestamp
 
+    // Comparacion dinamica de atributo Traslado.timestamp
     static class MasAntiguo implements Comparator<Traslado>{
 
         public int compare(Traslado t1, Traslado t2){
@@ -33,7 +33,6 @@ class Comparadores {
     }
 
     // Comparacion dinamica de atributo Traslado.gananciaNeta
-
     static class MasRedituable implements Comparator<Traslado>{
 
         public int compare(Traslado t1, Traslado t2){
@@ -44,7 +43,6 @@ class Comparadores {
     }
 
     // Comparacion dinamica de atributo Ciudad.superavit
-
     static class MasSuperHabit implements Comparator<Ciudad>{
         
         public int compare(Ciudad c1, Ciudad c2){

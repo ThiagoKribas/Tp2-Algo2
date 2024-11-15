@@ -15,7 +15,7 @@ public class Heap<T> {
         this.index = 0;
     }
 
-    // Constructor de Heap con lista
+/*     // Constructor de Heap con lista
     public Heap(Comparator<T> comparador, ArrayList<Nodo<T>> array) {
         this.comparador = comparador;
         this.lista = new ArrayList<Nodo<T>>(array); // Copia de la lista
@@ -30,6 +30,7 @@ public class Heap<T> {
             siftDown(i);
         }
     }
+ */
 
     // Método para agregar un elemento
     public void agregar(T objeto){
@@ -39,7 +40,7 @@ public class Heap<T> {
         // Inicializar solo un índice para el heap actual
         nodoObjeto.indices = new ArrayList<>();
         nodoObjeto.indices.add(lista.size() - 1);  // Solo agregamos un índice
-        siftUp(lista.size() - 1);
+        this.siftUp(lista.size() - 1);
     }
 
     // Método para agregar un nodo
@@ -49,7 +50,7 @@ public class Heap<T> {
         // Agregamos el indice al nodo actual
         nodoObjeto.indices.add(lista.size() - 1);  // Solo agregamos un índice
         
-        siftUp(lista.size() - 1);
+        this.siftUp(lista.size() - 1);
     }
 
     // Método para eliminar un elemento por índice
@@ -157,14 +158,14 @@ public class Heap<T> {
     public void modificar(int indice, T nuevoValor) {
         if(indice >= lista.size()) return;
         Nodo<T> nodo = lista.get(indice);
-        T valorAntiguo = nodo.objeto;
+        T valorAntiguo = lista.get((indice - 1 )/ 2).objeto;
         nodo.objeto = nuevoValor;
 
         // Comparar el nuevo valor con el antiguo para decidir si usar siftUp o siftDown
         if (comparador.compare(nuevoValor, valorAntiguo) > 0) {
-            siftUp(indice);
+            this.siftUp(indice);
         } else {
-            siftDown(indice);
+            this.siftDown(indice);
         }
     }
 
