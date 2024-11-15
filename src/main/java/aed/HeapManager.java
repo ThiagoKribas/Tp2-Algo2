@@ -50,7 +50,7 @@ public class HeapManager<T> {
         T elemento = heap.obtenerPrimero();
 
         // Eliminar el elemento de todos los heaps
-        eliminar(index,0);
+        this.eliminar(0,index);
 
         return elemento;
     }

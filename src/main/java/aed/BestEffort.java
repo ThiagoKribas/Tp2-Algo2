@@ -75,8 +75,10 @@ public class BestEffort {
             gananciaDespachos += traslado.gananciaNeta;
             cantDespachos += 1;
 
-            compararStatsCiudades(idCiudadesMayorGanancia, origen);
-            compararStatsCiudades(idCiudadesMayorPerdida, destino); 
+
+            //PREGUNTAR SI PERDIMOS/GANAMOS COMPLEJIDAD
+           compararGananciaCiudades(this.idCiudadesMayorGanancia, origen);
+           compararPerdidaCiudades(this.idCiudadesMayorPerdida, destino); 
         }
         return MasRedituables;
     }
@@ -103,25 +105,63 @@ public class BestEffort {
             gananciaDespachos += traslado.gananciaNeta;
             cantDespachos += 1;
             
-            compararStatsCiudades(idCiudadesMayorGanancia, origen);
-            compararStatsCiudades(idCiudadesMayorPerdida, destino); 
+            compararGananciaCiudades(this.idCiudadesMayorGanancia, origen);
+            compararPerdidaCiudades(this.idCiudadesMayorPerdida, destino); 
         }
         return MasAntiguos;
     }
     
     //Todas operaciones en O(1)
-    private void compararStatsCiudades(ArrayList<Integer> listaId, Ciudad ciudad) {
-        if (listaCiudades.length == 0 || listaId.isEmpty()) {
+    private void compararGananciaCiudades(ArrayList<Integer> listaId, Ciudad ciudad) {
+        if (listaCiudades.length == 0){
+            return;
+        }
+        if (listaId.isEmpty()) {
+            listaId.add(ciudad.id);
             return;
         }
         Ciudad mayor = listaCiudades[listaId.get(0)];
+        
+        if (mayor == ciudad){
+            if (listaId.size() >= 2){
+            mayor = listaCiudades[listaId.get(1)];
+            } else {return;}
+        }
         if(ciudad.ganancia == mayor.ganancia){
             listaId.add(ciudad.id);
         } else if (ciudad.ganancia > mayor.ganancia) {
             listaId.clear();
             listaId.add(ciudad.id);
         }   
+        return;
     }
+
+    private void compararPerdidaCiudades(ArrayList<Integer> listaId, Ciudad ciudad) {
+        if (listaCiudades.length == 0){
+            return;
+        }
+        if (listaId.isEmpty()) {
+            listaId.add(ciudad.id);
+            return;
+        }
+        Ciudad mayor = listaCiudades[listaId.get(0)];
+        
+        if (mayor == ciudad){
+            if (listaId.size() >= 2){
+            mayor = listaCiudades[listaId.get(1)];
+            } else {return;}
+        }
+        if(ciudad.perdida == mayor.perdida){
+            listaId.add(ciudad.id);
+        } else if (ciudad.perdida > mayor.perdida) {
+            listaId.clear();
+            listaId.add(ciudad.id);
+        }   
+        return;
+    }
+
+    
+
 
     public int ciudadConMayorSuperavit(){
         // O(1)
