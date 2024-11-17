@@ -2,6 +2,7 @@ package aed;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -198,4 +199,86 @@ public class BestEffortStress {
         int[] despachados = sis.despacharMasRedituables(100000);
         assertEquals(100000, despachados.length, "No se despachó la cantidad esperada de traslados.");
     }
+
+
+    @Test
+    void stressTestDespacharConMasGananciaDeAUno() {
+        BestEffort sis = new BestEffort(this.cantCiudades, this.listaTraslados);
+
+        // Despachamos de a uno los traslados más redituables
+        for (int i = 0; i < 1000; i++) {
+            int[] despachados = sis.despacharMasRedituables(1);
+            assertEquals(1, despachados.length, "No se despachó un traslado.");
+        }
+
+        // Verificamos las ciudades con mayor ganancia y pérdida
+        ArrayList<Integer> ciudadesConMayorGanancia = sis.ciudadesConMayorGanancia();
+        ArrayList<Integer> ciudadesConMayorPerdida = sis.ciudadesConMayorPerdida();
+
+        assertNotNull(ciudadesConMayorGanancia, "La lista de ciudades con mayor ganancia es nula.");
+        assertNotNull(ciudadesConMayorPerdida, "La lista de ciudades con mayor pérdida es nula.");
+    }
+
+    @Test
+    void stressTestPromedioPorTraslado() {
+        BestEffort sis = new BestEffort(this.cantCiudades, this.listaTraslados);
+
+        // Despachamos traslados en lotes y calculamos el promedio
+        int totalDespachados = 0;
+        int totalGanancia = 0;
+        int lote = 10000;
+
+        while (sis.HeapManager.size() > 0) {
+            int n = Math.min(lote, sis.HeapManager.size());
+            int[] despachados = sis.despacharMasRedituables(n);
+            totalDespachados += despachados.length;
+
+            // Sumar las ganancias de los traslados despachados
+            for (int id : despachados) {
+                totalGanancia += listaTraslados[id].gananciaNeta;
+            }
+
+            int gananciaPromedioEsperada = totalGanancia / totalDespachados;
+            int gananciaPromedioSistema = sis.gananciaPromedioPorTraslado();
+
+            assertEquals(gananciaPromedioEsperada, gananciaPromedioSistema, "La ganancia promedio por traslado no coincide.");
+        }
+    }
+
+    @Test
+    void stressTestMayorSuperavit() {
+        BestEffort sis = new BestEffort(this.cantCiudades, this.listaTraslados);
+
+        // Despachamos traslados y verificamos la ciudad con mayor superávit después de cada despacho
+        int lote = 5000;
+        int[] ganancias = new int[cantCiudades];
+        int[] perdidas = new int[cantCiudades];
+
+        while (sis.HeapManager.size() > 0) {
+            int n = Math.min(lote, sis.HeapManager.size());
+            int[] despachados = sis.despacharMasAntiguos(n);
+
+            for (int id : despachados) {
+                Traslado t = listaTraslados[id];
+                ganancias[t.origen] += t.gananciaNeta;
+                perdidas[t.destino] += t.gananciaNeta;
+            }
+
+            // Calcular ciudad con mayor superávit esperado
+            int ciudadConMayorSuperavitEsperada = 0;
+            int maxSuperavit = ganancias[0] - perdidas[0];
+            for (int i = 1; i < cantCiudades; i++) {
+                int superavit = ganancias[i] - perdidas[i];
+                if (superavit > maxSuperavit || (superavit == maxSuperavit && i < ciudadConMayorSuperavitEsperada)) {
+                    maxSuperavit = superavit;
+                    ciudadConMayorSuperavitEsperada = i;
+                }
+            }
+
+            int ciudadConMayorSuperavitSistema = sis.ciudadConMayorSuperavit();
+
+            assertEquals(ciudadConMayorSuperavitEsperada, ciudadConMayorSuperavitSistema, "La ciudad con mayor superávit no coincide.");
+        }
+    }
+    
 }

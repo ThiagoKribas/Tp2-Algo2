@@ -28,6 +28,7 @@ public class BestEffortTests {
             new Traslado(7, 6, 3, 2000, 42)
         };
     }
+    
     void assertSetEquals(ArrayList<Integer> s1, ArrayList<Integer> s2) {
         assertEquals(s1.size(), s2.size(), "Los sets tienen tamaños diferentes.");
         for (int e1 : s1) {
