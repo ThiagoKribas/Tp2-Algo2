@@ -16,6 +16,7 @@ public class Heap<T> {
     }
 
     // Método para agregar un elemento
+    // Complejidad: O(log n)
     public void agregar(T objeto){
         Nodo<T> nodoObjeto = new Nodo<T>(objeto);
         this.lista.add(nodoObjeto);
@@ -27,6 +28,7 @@ public class Heap<T> {
     }
 
     // Método para agregar un nodo
+    // Complejidad: O(log n)
     public void agregar(Nodo<T> nodoObjeto){
         this.lista.add(nodoObjeto);
 
@@ -37,6 +39,7 @@ public class Heap<T> {
     }
 
     // Método para eliminar un elemento por índice
+    // Complejidad: O(log n)
     public void eliminar(Integer indice){
         if(indice >= lista.size() || indice < 0) return; 
         Nodo<T> ultimoNodo = lista.get(lista.size() - 1);
@@ -47,6 +50,7 @@ public class Heap<T> {
     } 
 
     // Método para eliminar un elemento por valor
+    // Complejidad: O(n)
     public void eliminarElemento(T elemento) {
         for(int i = 0; i < lista.size(); i++) {
             if(lista.get(i).objeto.equals(elemento)) {
@@ -57,6 +61,7 @@ public class Heap<T> {
     }
 
     // Método para obtener un elemento por índice
+    // Complejidad: O(1)
     public T get(int index){
         if(index >= 0 && index < lista.size()){
             return lista.get(index).objeto;
@@ -126,18 +131,21 @@ public class Heap<T> {
         }
     }
 
+    // Complejidad: O(log n)
     public T sacarPrimero() {
         if(lista.isEmpty()) return null;
         T res = lista.get(0).objeto;
         eliminar(0);
         return res;
     }
-    
+
+    // Complejidad: O(1)
     public T obtenerPrimero() {
         if(lista.isEmpty()) return null;
         return lista.get(0).objeto;
     }
 
+    // Complejidad: O(log n)
     public void modificar(int indice, T nuevoValor) {
         if(indice >= lista.size()) return;
         Nodo<T> nodo = lista.get(indice);
@@ -152,6 +160,7 @@ public class Heap<T> {
         }
     }
 
+    // toString para debugging
     public String toString(){
         StringBuilder res = new StringBuilder();
         for (Nodo<T> nodo : lista){
