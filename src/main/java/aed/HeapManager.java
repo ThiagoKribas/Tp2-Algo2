@@ -24,16 +24,22 @@ public class HeapManager<T> {
     public HeapManager(ArrayList<Comparator<T>> comparadores, T[] datosIniciales) {
         heapList = new ArrayList<>();
         nodoList = new ArrayList<>();
-
+        ArrayList<Nodo<T>> input = new ArrayList<>();
+        int indexNodo = 0;
+        for (T dato : datosIniciales) {
+            Nodo<T> nodo = new Nodo<T>(dato);
+            nodo.indices.add(indexNodo);
+            indexNodo++;
+            nodoList.add(nodo);
+            input.add(nodo);
+        }
+        
         for (int index = 0; index < comparadores.size(); index++) {
-            Heap<T> heap = new Heap<>(comparadores.get(index));
+            Heap<T> heap = new Heap<>(comparadores.get(index), input);
             heap.index = index;
             heapList.add(heap);
         }
-
-        for (T dato : datosIniciales) {
-            this.agregar(dato);
-        }
+        
     }
 
     // Agregar elemento a todos los heaps

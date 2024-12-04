@@ -3,6 +3,8 @@ package aed;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
 import java.util.Comparator;
 
 public class HeapTest {
@@ -27,6 +29,35 @@ public class HeapTest {
         assertEquals(Integer.valueOf(7), heap.obtenerPrimero());
     }
     
+    @Test
+    public void testArrayToHeap() {
+        Heap<Integer> heap = new Heap<>(maxComparator);
+        ArrayList<Nodo<Integer>> Lista = new ArrayList<Nodo<Integer>>();
+        Lista.add(new Nodo<Integer>(1));
+        Lista.add(new Nodo<Integer>(2)); 
+        Lista.add(new Nodo<Integer>(3));
+        Lista.add(new Nodo<Integer>(4));
+        Lista.add(new Nodo<Integer>(5));
+        
+        heap.ArrayToHeap(Lista);
+        assertEquals(5, heap.size());
+        assertEquals(Integer.valueOf(5), heap.obtenerPrimero());
+    }
+
+    @Test
+    public void testConstructorArray() {
+        ArrayList<Nodo<Integer>> Lista = new ArrayList<Nodo<Integer>>();
+        Lista.add(new Nodo<Integer>(1));
+        Lista.add(new Nodo<Integer>(3)); 
+        Lista.add(new Nodo<Integer>(5));
+        Lista.add(new Nodo<Integer>(7));
+        Lista.add(new Nodo<Integer>(9));
+        Heap<Integer> heap = new Heap<>(maxComparator, Lista);
+        
+        assertEquals(5, heap.size());
+        assertEquals(Integer.valueOf(9), heap.obtenerPrimero());
+    }
+
     @Test
     public void testSacarPrimero() {
         Heap<Integer> heap = new Heap<>(maxComparator);
