@@ -25,11 +25,8 @@ public class HeapManager<T> {
         heapList = new ArrayList<>();
         nodoList = new ArrayList<>();
         ArrayList<Nodo<T>> input = new ArrayList<>();
-        int indexNodo = 0;
         for (T dato : datosIniciales) {
             Nodo<T> nodo = new Nodo<T>(dato);
-            nodo.indices.add(indexNodo);
-            indexNodo++;
             nodoList.add(nodo);
             input.add(nodo);
         }
