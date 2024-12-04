@@ -25,6 +25,8 @@ public class Heap<T> {
     // Transforma una lista en Heap usando el comparador previamente especificado -> O(|n|)
     public void ArrayToHeap(ArrayList<Nodo<T>> input) {
         this.lista = new ArrayList<Nodo<T>>(input);
+
+        // Agregamos el indice correspondiente a cada nodo antes de ordenarlos -> O(|n|)
         for (int i = 0; i < this.lista.size(); i++){
             lista.get(i).indices.add(i);
         }
