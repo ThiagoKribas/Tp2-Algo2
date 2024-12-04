@@ -26,7 +26,7 @@ public class Heap<T> {
     public void ArrayToHeap(ArrayList<Nodo<T>> input) {
         this.lista = new ArrayList<Nodo<T>>(input);
         for (int i = 0; i < this.lista.size(); i++){
-            nodo.indices.add(i);
+            lista.get(i).indices.add(i);
         }
 
         for(int i = ((this.lista.size() / 2) - 1); i >= 0 ; i--){
