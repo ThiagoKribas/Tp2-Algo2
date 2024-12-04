@@ -20,11 +20,13 @@ public class HeapManager<T> {
         }
     }
 
-    // Constructor con datos iniciales
+    // Constructor con datos iniciales usando ArrayToHeap para que sea O(|datosIniciales|)
     public HeapManager(ArrayList<Comparator<T>> comparadores, T[] datosIniciales) {
         heapList = new ArrayList<>();
         nodoList = new ArrayList<>();
         ArrayList<Nodo<T>> input = new ArrayList<>();
+        
+        // O(|datosIniciales|)
         for (T dato : datosIniciales) {
             Nodo<T> nodo = new Nodo<T>(dato);
             nodoList.add(nodo);
@@ -32,8 +34,8 @@ public class HeapManager<T> {
         }
         
         for (int index = 0; index < comparadores.size(); index++) {
-            Heap<T> heap = new Heap<>(comparadores.get(index), input);
-            heap.index = index;
+            // Creamos el Heap usando el constructor que implementa ArrayToHeap -> O(|input|)
+            Heap<T> heap = new Heap<>(comparadores.get(index), input, index);
             heapList.add(heap);
         }
         

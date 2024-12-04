@@ -16,19 +16,20 @@ public class Heap<T> {
     }
 
     // Constructor de Heap con lista
-    public Heap(Comparator<T> comparador, ArrayList<Nodo<T>> input){
+    public Heap(Comparator<T> comparador, ArrayList<Nodo<T>> input, int index){
         this.comparador = comparador;
-        this.index = 0;
+        this.index = index;
         ArrayToHeap(input);
     }
 
-    // Transforma una lista en Heap usando el comparador previamente especificado
+    // Transforma una lista en Heap usando el comparador previamente especificado -> O(|n|)
     public void ArrayToHeap(ArrayList<Nodo<T>> input) {
         this.lista = new ArrayList<Nodo<T>>(input);
         for (int i = 0; i < this.lista.size(); i++){
             lista.get(i).indices.add(i);
         }
 
+        // Usamos el algoritmo de Floyd para pasar de lista a heap -> O(|n|)
         for(int i = ((this.lista.size() / 2) - 1); i >= 0 ; i--){
             siftDown(i);
         }

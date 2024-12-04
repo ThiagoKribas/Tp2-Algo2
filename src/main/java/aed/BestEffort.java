@@ -26,19 +26,21 @@ public class BestEffort {
         ArrayList<Comparator<Traslado>> comparadores = new ArrayList<>();
         comparadores.add(new Comparadores.MasAntiguo());
         comparadores.add(new Comparadores.MasRedituable());
+        
+        // Inicializar el HeapManager de Traslados con la lista de Traslados -> O(|T|)
         this.HeapManager = new HeapManager<Traslado>(comparadores, traslados);
 
         // Inicializar comparadores para el HeapManager de Ciudades (Superavit) -> O(1)
         ArrayList<Comparator<Ciudad>> comparadorSuperavit = new ArrayList<>();
         comparadorSuperavit.add(new Comparadores.MasSuperHabit());
-        this.HeapManagerSuperAvit = new HeapManager<Ciudad>(comparadorSuperavit); 
-
+        
         // Inicializar lista de ciudades -> O(|C|)
         listaCiudades = new Ciudad[cantCiudades]; 
         for (int index = 0; index < cantCiudades ; index++) {
             listaCiudades[index] = new Ciudad(index);
-            this.HeapManagerSuperAvit.agregar(listaCiudades[index]);
         }
+        // Inicializar HeapManagerSuperAvit con la lista de Ciudades -> O(|C|)
+        this.HeapManagerSuperAvit = new HeapManager<Ciudad>(comparadorSuperavit, listaCiudades); 
     }
 
     public void registrarTraslados(Traslado[] traslados){

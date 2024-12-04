@@ -98,7 +98,7 @@ public class BestEffortStress {
 
         // Despachamos todos los traslados
         int totalTraslados = listaTraslados.length;
-        int[] despachados = sis.despacharMasRedituables(totalTraslados);
+        sis.despacharMasRedituables(totalTraslados);
 
         // Verificamos que la ganancia promedio sea correcta
         int gananciaTotal = Arrays.stream(listaTraslados).mapToInt(t -> t.gananciaNeta).sum();

@@ -52,7 +52,7 @@ public class HeapTest {
         Lista.add(new Nodo<Integer>(5));
         Lista.add(new Nodo<Integer>(7));
         Lista.add(new Nodo<Integer>(9));
-        Heap<Integer> heap = new Heap<>(maxComparator, Lista);
+        Heap<Integer> heap = new Heap<>(maxComparator, Lista, 0);
         
         assertEquals(5, heap.size());
         assertEquals(Integer.valueOf(9), heap.obtenerPrimero());
